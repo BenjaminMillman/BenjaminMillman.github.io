@@ -1,20 +1,24 @@
 ---
 layout: post
-title: Sample blog post to learn markdown tips
-subtitle: There's lots to learn!
-gh-repo: daattali/beautiful-jekyll
+title: How can we evaluate and assign value to NFL tackles?
+subtitle: My submission to the 2024 NFL Big Data Bowl 
+gh-repo: BenjaminMillman/2024_BigDataBowl
 gh-badge: [star, fork, follow]
-tags: [test]
+tags: [NFL, Football, Statistics, ML]
 comments: true
-author: Bill Smith
+author: Ben Millman
 ---
 
 {: .box-success}
-This is a demo post to show you how to write blog posts with markdown.  I strongly encourage you to [take 5 minutes to learn how to write in markdown](https://markdowntutorial.com/) - it'll teach you how to transform regular text into bold/italics/tables/etc.<br/>I also encourage you to look at the [code that created this post](https://raw.githubusercontent.com/daattali/beautiful-jekyll/master/_posts/2020-02-28-sample-markdown.md) to learn some more advanced tips about using markdown in Beautiful Jekyll.
+This project was created as part of a Kaggle competition whose expiration has passed. All work was completed by myself using data from the 2022 season provided by the NFL in a kaggle notebook running R. This was an awesome opportunity to learn and combine my passions as an athlete and data analytics student. I hope you enjoy!
 
-**Here is some bold text**
+## Introduction
+Football can be complex at times, but when it's all boiled down, there's 2 goals. The offense wants to move the ball forward, and the defense wants to stop them. Defenses do this through tackling, and that was the them of this year's competition.  The task at the outset was general - create metrics that assign value to tackling. As someone who has played football my entire life, this seemed simple at first as we sort of intuitively assign value to tackles as we watch, but creating math-driven, objective assesments is much more difficult. I split my approach and focussed on two avenues. First, I wanted to calculate the probability of a player making a tackle as a function of their distance to the ball. Second, I wanted to predict the location of each tackle. With each of these I could generate further metrics. 
 
-## Here is a secondary heading
+## Data Cleaning
+Before I could start on any of that, I had to prepare the data. The NFL provided multiple tables including the following: a games table which contained basic information about the game and its final score, a players table which contained incormation about each player and their background, a plays table which detailed the state of the game before and after the play and contained information about the play itself, a tackles table which contained information about every tackle tackle that occured, and lastly, 9 weeks of tracking information containing the football's and every player's positional information of every frame of every play. Each of these also contained various ID columns which could be used to join them. 
+
+For each of these tables I made sure that columns read in as characters that needed to be factors were appropriately converted, and made sure all dates and times were read in correctly or converted to the same format. Next, I combined all of the tracking weeks into one large table. 
 
 [This is a link to a different site](https://deanattali.com/) and [this is a link to a section inside this page](#local-urls).
 
