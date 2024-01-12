@@ -20,76 +20,28 @@ Before I could start on any of that, I had to prepare the data. The NFL provided
 
 For each of these tables I made sure that columns read in as characters that needed to be factors were appropriately converted, and made sure all dates and times were read in correctly or converted to the same format. Next, I combined all of the tracking weeks into one large table. 
 
-[This is a link to a different site](https://deanattali.com/) and [this is a link to a section inside this page](#local-urls).
+## Tackle Probability
+The first thing I wanted to do now that the data was clean was calculate each player's tackle probability by distance. To start, I assigned each play a 1 if the player made a tackle and a 0 otherwise. So for every frame in a play where a player made the tackle, that player would have a 1. Then I calculated every player's distance to the ball on every frame of every play. With these two combined we have a Bernoulli distribution for each player where tackles varie as a function of distance. I then created a logistic regression to model this relationship where Y is the log of a tackle and the predictors are distance to the ball and the interaction between distance to the ball and a player's name. The resulting curves are pictured below. 
 
-Here's a table:
+*Note: The positive slopes and flat lines are data issues and/or players with few opportunities. These were removed for future analysis.*
+![Tackle Curves](https://raw.githubusercontent.com/BenjaminMillman/2024_BigDataBowl/main/Screen%20Shot%202024-01-08%20at%202.39.22%20PM.png)
+This isn't super helpful, but it is good to see the results of the model. The players with the least steep slopes and highest Y intercept are the best by our metrics. 
 
-| Number | Next number | Previous number |
-| :------ |:--- | :--- |
-| Five | Six | Four |
-| Ten | Eleven | Nine |
-| Seven | Eight | Six |
-| Two | Three | One |
+### Tackle Range
+My next goal was to quantify a player's tackle range. Using the above model I could predict each player's tackle probability at each whole number distance from the ball. Using this startegy, I first found the top players' tackle probability at 0 yards, this is pictured below. 
+![Top Tacklers at 0](https://raw.githubusercontent.com/BenjaminMillman/2024_BigDataBowl/main/top15at0.jpg)
+These represent the most consistent players in successfully tackling a player when they're close to them.
+Next,  I defined tackle range as the distance at which a player is more likey to go on to make than miss a tackle. ie P(Tackle) > .5. Below are the top players by my tackle range metric. 
+![Top Tackle Range](https://raw.githubusercontent.com/BenjaminMillman/2024_BigDataBowl/main/range_plot.jpg)
+As shown above, once Geno Stone crosses 13 yards, he is more likey to make than miss the tackle. 
 
-How about a yummy crepe?
+## Yards Saved
+Next I wanted to find a way to quantify the value of tackle. This initally seems simple, but as with most of this project was not. I started by creating a nueral network to predict the locations of tackles. This involved a lot of data manipulation to create the correct structure. I then split the data into 70% training and 30% testing. This data contains complex chronological patterns and the best type of model to capture these is a Recurrent Nueral Network. My model takes in the positional data of all players on each frame, and outputs a location for the tackle at the end of the play. Due to time and resource restrictions, I couldn't full optimize the model, I did get it to a place that is acceptable. Below are the results of the model where blue is the actual location and red is the prediction. 
+![Model Results](https://raw.githubusercontent.com/BenjaminMillman/2024_BigDataBowl/main/Screen%20Shot%202024-01-08%20at%202.57.46%20AM.png)
 
-![Crepe](https://beautifuljekyll.com/assets/img/crepe.jpg)
+Then I used this model to estimate yards saved. To do this, I masked the player who made the tackle on each play and re-predicted the tackle locations, the distance between the new and old predictions is my estimate of yards saved. This approach does a good job of capturing the essence of yards saved, but it does also unfortunately capture the effect of the defense having one less player, this mean my model most likely overestimates the value of a tackle. Below are an animation of one of the most valuable tackles, and the top players by average yards saved. 
+![MVT](https://raw.githubusercontent.com/BenjaminMillman/2024_BigDataBowl/main/MVT2.gif)
+![Top Yards Saved](https://raw.githubusercontent.com/BenjaminMillman/2024_BigDataBowl/main/top_yards_saved.jpg)
 
-It can also be centered!
-
-![Crepe](https://beautifuljekyll.com/assets/img/crepe.jpg){: .mx-auto.d-block :}
-
-Here's a code chunk:
-
-~~~
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-~~~
-
-And here is the same code with syntax highlighting:
-
-```javascript
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-```
-
-And here is the same code yet again but with line numbers:
-
-{% highlight javascript linenos %}
-var foo = function(x) {
-  return(x + 5);
-}
-foo(3)
-{% endhighlight %}
-
-## Boxes
-You can add notification, warning and error boxes like this:
-
-### Notification
-
-{: .box-note}
-**Note:** This is a notification box.
-
-### Warning
-
-{: .box-warning}
-**Warning:** This is a warning box.
-
-### Error
-
-{: .box-error}
-**Error:** This is an error box.
-
-## Local URLs in project sites {#local-urls}
-
-When hosting a *project site* on GitHub Pages (for example, `https://USERNAME.github.io/MyProject`), URLs that begin with `/` and refer to local files may not work correctly due to how the root URL (`/`) is interpreted by GitHub Pages. You can read more about it [in the FAQ](https://beautifuljekyll.com/faq/#links-in-project-page). To demonstrate the issue, the following local image will be broken **if your site is a project site:**
-
-![Crepe](/assets/img/crepe.jpg)
-
-If the above image is broken, then you'll need to follow the instructions [in the FAQ](https://beautifuljekyll.com/faq/#links-in-project-page). Here is proof that it can be fixed:
-
-![Crepe]({{ '/assets/img/crepe.jpg' | relative_url }})
+## Conclusion 
+This project was a great opprotunity to combine things I'm passionate about. I learned a lot and challenged myself by doing it all in R. If you'd like to see more click my [Kaggle Notebook](https://www.kaggle.com/code/bmailman/a-statistical-analysis-on-tackling-in-r) this has a more technical write up of the project. The linked github repo also contains all the code. Thanks for rading I hope it was insightful!
