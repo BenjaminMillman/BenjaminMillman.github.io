@@ -11,7 +11,7 @@ author: Ben Millman
 ---
 
 {: .box-success}
-This project was created as part of a Kaggle competition whose expiration has passed. All work was completed by myself using data from the 2022 season provided by the NFL in a kaggle notebook running R. This was an awesome opportunity to learn and combine my passions as an athlete and data analytics student. I hope you enjoy it!
+This project was created as part of a Kaggle competition whose expiration has passed. All work was completed by myself using data from the 2022 season provided by the NFL in a Kaggle notebook running R. This was an awesome opportunity to learn and combine my passions as an athlete and data analytics student. I hope you enjoy it!
 
 ## Introduction
 Football can be complex at times, but when it's all boiled down, there's 2 goals. The offense wants to move the ball forward, and the defense wants to stop them. Defenses do this through tackling, and that was the theme of this year's competition.  The task at the outset was general - create metrics that assign value to tackling. As someone who has played football my entire life, this seemed simple at first as we sort of intuitively assign value to tackles as we watch, but creating math-driven, objective assessments is much more difficult. I split my approach and focussed on two avenues. First, I wanted to calculate the probability of a player making a tackle as a function of their distance to the ball. Second, I wanted to predict the location of each tackle. With each of these I could generate further metrics. 
