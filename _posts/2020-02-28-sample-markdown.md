@@ -2,6 +2,7 @@
 layout: post
 title: How can we evaluate and assign value to NFL tackles?
 subtitle: My submission to the 2024 NFL Big Data Bowl 
+thumbnail-img: /assets/img/tackle.jpg
 gh-repo: BenjaminMillman/2024_BigDataBowl
 gh-badge: [star, fork, follow]
 tags: [NFL, Football, Statistics, ML]
